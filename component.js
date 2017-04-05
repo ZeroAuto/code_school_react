@@ -9,19 +9,39 @@
 // elements in upper camel case are rendered as react components
 
 class CommentBox extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      showComments: false
+    }
+  }
+
   render() {
     const comments = this._getComments();
+    let commentNodes;
+    let buttonText = "Show Comments";
+    if (this.state.showComments) {
+      commentNodes = <div className="comment-list">{comments}</div>;
+      buttonText = "Hide Comments";
+    }
+
     return(
       <div className="comment-box">
-      <h3>Comments</h3>
-      <h4 className="comment-count">
-        {this._getCommentsTitle(comments.length)}
-      </h4>
-        <div className="comment-list">
-          {comments}
-        </div>
+        <h3>Comments</h3>
+        <h4 className="comment-count">
+          {this._getCommentsTitle(comments.length)}
+        </h4>
+        <button onClick={this._handleClick.bind(this)}>{buttonText}</button>
+        {commentNodes}
       </div>
     );
+  }
+
+  _handleClick() {
+    this.setState({
+      showComments: !this.state.showComments
+    })
   }
 
   _getComments() {
